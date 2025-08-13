@@ -16,8 +16,8 @@ class CreateExercisesRepetitionsTable extends Migration
         Schema::create('exercises_repetitions', function (Blueprint $table) {
             $table->smallIncrements('exercises_repetitions_id');
             $table->unsignedInteger('exercises_repetitions_exercises');
-            $table->smallInteger('exercises_repetitions_weight')->nullable();
-            $table->smallInteger('exercises_repetitions_times')->nullable();
+            $table->float('exercises_repetitions_weight')->nullable();
+            $table->smallInteger('exercises_repetitions_repetitions')->nullable();
             $table->smallInteger('exercises_repetitions_rest')->nullable();
 
             $table

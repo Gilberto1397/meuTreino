@@ -17,4 +17,9 @@ class Exercise extends Model
     protected $table = 'exercises';
     protected $primaryKey = 'exercises_id';
     public $timestamps = false;
+
+    protected $fillable = [
+        'exercises_name',
+        'exercises_users',
+    ];
 }
