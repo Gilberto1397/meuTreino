@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('exercices')->group(function () {
+Route::prefix('meus-exercicios')->group(function () {
     Route::post('', [ExerciseController::class, 'createExercise']);
 });
