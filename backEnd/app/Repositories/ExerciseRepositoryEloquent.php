@@ -42,4 +42,13 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         }
         return true;
     }
+
+    /**
+     * Return all exercises.
+     * @return array|Exercise[]
+     */
+    public function getAll(): array
+    {
+        return Exercise::all()->all();
+    }
 }

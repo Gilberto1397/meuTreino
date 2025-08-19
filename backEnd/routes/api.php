@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
-use App\Models\Exercise;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,11 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:api'])->prefix('meus-exercicios')->group(function () {
-    Route::post('', [ExerciseController::class, 'createExercise']);
-    Route::get('', function() {
-        return Exercise::all();
-    });
+Route::middleware([])->controller(ExerciseController::class)->prefix('meus-exercicios')->group(function () {
+    Route::post('', 'createExercise');
+    Route::get('', 'getAll');
 });
 
 Route::prefix('autenticacao')->controller(AuthController::class)->group(function () {
