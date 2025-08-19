@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import axios from "axios";
 
 const loginForm = ref({
   email: '',
@@ -27,16 +28,20 @@ const validateForm = () => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleLogin = () => {
-  if (validateForm()) {
-    loading.value = true
-    // Aqui seria implementada a lógica de login
-    console.log('Login dados:', loginForm.value)
+const handleLogin = async () => {
+  try {
+    if (validateForm()) {
+      loading.value = true
+      const dados = {
+        email: loginForm.value.email,
+        password: loginForm.value.password
+      }
 
-    // Simular delay de requisição
-    setTimeout(() => {
-      loading.value = false
-    }, 1000)
+      const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
+      localStorage.setItem('token', resposta.access_token);
+    }
+  } catch (error) {
+    alert('DEU ERRO AO LOGAR');
   }
 }
 </script>
