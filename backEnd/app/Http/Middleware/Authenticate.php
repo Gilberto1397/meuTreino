@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use DomainException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
@@ -15,13 +16,20 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
-        }
+//        if (! $request->expectsJson()) {
+//            return route('login');
+//        }
+        return;
     }
 
+    /**
+     * this method is overwritten not triggering the above method
+     * @param $request
+     * @param array $guards
+     * @return mixed
+     */
     protected function unauthenticated($request, array $guards)
     {
-        throw new AuthenticationException('Faça login para continuar!');
+        throw new DomainException('Faça login para continuar!', 401);
     }
 }
