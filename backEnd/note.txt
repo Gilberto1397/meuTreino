@@ -2,5 +2,5 @@ tentar usar o lembrar-me e email verificado
 
 contar o número de vezes que o usuário fez aquele exercício - somar tanto no grupo de exercícios quanto exercício unitário
 
-ajustar errorHandler principalmente para não autenticado
+ajustar errorHandler principalmente para não autenticado - ajustar driver de log
     erro ao tentar deslogar sem enviar token
