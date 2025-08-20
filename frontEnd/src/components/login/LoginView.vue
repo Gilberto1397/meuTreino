@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import axios from "axios";
+import { useRouter, useRoute } from 'vue-router';
+
+const routeBrowser = useRouter();
+const routeDetails = useRoute();
 
 const loginForm = ref({
   email: '',
@@ -10,7 +14,7 @@ const loginForm = ref({
 const errors = ref({})
 const loading = ref(false)
 
-const validateForm = () => {
+const validateForm = () => { //todo utilizar gup para validação
   errors.value = {}
 
   if (!loginForm.value.email) {
@@ -39,6 +43,7 @@ const handleLogin = async () => {
 
       const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
       localStorage.setItem('token', resposta.access_token);
+      routeBrowser.push('/home');
     }
   } catch (error) {
     alert('DEU ERRO AO LOGAR');
