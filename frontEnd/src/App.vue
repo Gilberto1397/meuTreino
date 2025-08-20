@@ -3,7 +3,9 @@ import LoginView from "@/components/login/LoginView.vue";
 </script>
 
 <template>
-  <LoginView />
+  <main id="boxPrincipal" class="w-100 px-3">
+    <router-view/>
+  </main>
 </template>
 
 <style scoped>

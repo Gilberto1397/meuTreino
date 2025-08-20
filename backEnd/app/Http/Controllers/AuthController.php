@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * todo melhorar estrutura
+ */
 class AuthController extends Controller
 {
     /**
