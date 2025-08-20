@@ -19,11 +19,11 @@ onMounted(async () => {
     <div class="card" v-for="exercise in exercicesList" style="width: 18rem;"> <!-- todo ajustar essa largura -->
       <div class="card-body">
         <h5 class="card-title">{{exercise.name}}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">{{exercise.name}}</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s
-          content.</p>
+        <h6 class="card-subtitle mb-2 text-body-secondary">SÉRIES - {{exercise.series}}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">REPETIÇÕES - {{exercise.firstRepetitions}}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">PESO - {{exercise.firstWeight}}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">DESCANSO - {{exercise.firstRest}}</h6>
         <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
       </div>
     </div>
   </section>
