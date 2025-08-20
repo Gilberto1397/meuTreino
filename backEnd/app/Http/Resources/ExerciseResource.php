@@ -17,8 +17,12 @@ class ExerciseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->exercises_id,
-            'name' => $this->exercises_name
+            'id' => $this->exercises_id, //todo utilizar uuid
+            'name' => $this->exercises_name,
+            'series' => $this->series,
+            'firstRepetitions' => $this->fisrt_repetitions,
+            'firstWeight' => $this->first_weight,
+            'firstRest' => $this->first_rest,
         ];
     }
 }

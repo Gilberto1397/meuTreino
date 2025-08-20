@@ -17,8 +17,8 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     public function createExercise(CreateExerciseRequest $request): bool
     {
         $exercise = Exercise::create([
-            'exercises_name' => $request->exercises_name,
-            'exercises_users' => $request->exercises_users,
+            'exercises_name' => $request->name,
+            'exercises_users' => 1, //todo tirar valor fixo
         ]);
 
         if (!$exercise instanceof Exercise) {
@@ -49,6 +49,19 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function getAll(): array
     {
-        return Exercise::all()->all();
+        return Exercise::fromQuery('
+            select exercises_id,
+                   exercises_name,
+                   (select count(exercises_repetitions_exercises) from exercises_repetitions 
+                    where exercises_repetitions_exercises = exercises_id) as series,
+                    (select exercises_repetitions_repetitions from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as fisrt_repetitions,
+                    (select exercises_repetitions_weight from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_weight,
+                    (select exercises_repetitions_rest from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_rest
+                from exercises
+            order by exercises_name
+        ')->all();
     }
 }
