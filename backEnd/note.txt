@@ -7,3 +7,5 @@ ajustar errorHandler principalmente para não autenticado - ajustar driver de lo
 
 
 utilizar phpstan, psalm ou outra ferramenta de análise estática
+
+adicionar um campo de observação na criação de exercícios em cada série

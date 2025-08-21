@@ -49,6 +49,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function getAll(): array
     {
+        //todo vai quebrar se não informar valor para os dados de repetição
         return Exercise::fromQuery('
             select exercises_id,
                    exercises_name,
