@@ -1,6 +1,6 @@
 <script setup>
-import {ref, computed, watch} from 'vue'
-import axios from 'axios';
+import {ref, computed, watch, onMounted} from 'vue'
+import axios, {get} from 'axios';
 import {useRouter, useRoute} from 'vue-router';
 
 const exerciseName = ref('');
@@ -50,8 +50,29 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
   } catch (error) {
     alert('DEU ERRO AO CRIAR EXERCÍCIO');
   }
-
 }
+
+const getExercise = async (id) => {
+  try {
+    const resposta = (await axios.get(`http://127.0.0.1:8000/api/v1/meus-exercicios/${id}`)).data;
+    console.log(resposta);
+  } catch (error) {
+    alert('DEU ERRO AO TRAZER EXERCÍCIO');
+  }
+}
+
+const isShowExercise = async () => {
+  const exerciseId = routeDetails.params?.id
+
+  if (! exerciseId) {
+    return false;
+  }
+  await getExercise(exerciseId);
+}
+
+onMounted(async () => {
+  await isShowExercise();
+})
 </script>
 
 <template>
