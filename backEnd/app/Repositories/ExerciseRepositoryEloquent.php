@@ -70,11 +70,13 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     {
         return Exercise::fromQuery('
             select exercises.*,
+                   (select count(exercises_repetitions_exercises) from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id) as seriesQuantity,
                    exercises_repetitions.*
             from exercises
             inner join exercises_repetitions on exercises_repetitions_exercises = exercises_id
             where exercises_id = :id
-            order by exercises_name
+            order by exercises_name, exercises_repetitions_id
         ', [':id' => $id])->all();
     }
 }
