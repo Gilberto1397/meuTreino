@@ -45,7 +45,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
     const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exerciseDetails)).data;
 
     if (confirm('Exercício criado')) {
-      routeBrowser.push('/home');
+      routeBrowser.push('/home'); //todo usar nome da rota
     }
   } catch (error) {
     alert('DEU ERRO AO CRIAR EXERCÍCIO');
