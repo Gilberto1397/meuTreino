@@ -20,4 +20,6 @@ interface ExerciseRepository
      * @return Exercise[]|array
      */
     public function getAll(): array;
+
+    public function getExerciseByFilters(int $id): array;
 }

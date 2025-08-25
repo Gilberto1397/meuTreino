@@ -53,10 +53,10 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         return Exercise::fromQuery('
             select exercises_id,
                    exercises_name,
-                   (select count(exercises_repetitions_exercises) from exercises_repetitions 
+                   (select count(exercises_repetitions_exercises) from exercises_repetitions
                     where exercises_repetitions_exercises = exercises_id) as series,
                     (select exercises_repetitions_repetitions from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as fisrt_repetitions,
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_repetitions,
                     (select exercises_repetitions_weight from exercises_repetitions
                     where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_weight,
                     (select exercises_repetitions_rest from exercises_repetitions
@@ -64,5 +64,17 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
                 from exercises
             order by exercises_name
         ')->all();
+    }
+
+    public function getExerciseByFilters(int $id): array
+    {
+        return Exercise::fromQuery('
+            select exercises.*,
+                   exercises_repetitions.*
+            from exercises
+            inner join exercises_repetitions on exercises_repetitions_exercises = exercises_id
+            where exercises_id = :id
+            order by exercises_name
+        ', [':id' => $id])->all();
     }
 }

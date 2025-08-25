@@ -11,7 +11,7 @@ class ExerciseResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -19,10 +19,45 @@ class ExerciseResource extends JsonResource
         return [
             'id' => $this->exercises_id, //todo utilizar uuid
             'name' => $this->exercises_name,
-            'series' => $this->series,
-            'firstRepetitions' => $this->fisrt_repetitions,
-            'firstWeight' => $this->first_weight,
-            'firstRest' => $this->first_rest,
+
+            //todo validar se da erro caso não exista repetições, peso ou descanso
         ];
+    }
+
+    public static function firstData($exercise)
+    {
+        return (object)[
+            'id' => $exercise->exercises_id, //todo utilizar uuid
+            'name' => $exercise->exercises_name,
+            'series' => $exercise->series,
+            'firstRepetitions' => $exercise->first_repetitions,
+            'firstWeight' => $exercise->first_weight,
+            'firstRest' => $exercise->first_rest,
+        ];
+    }
+
+    public static function fullData($exerciseData)
+    {
+        $exercises = [];
+        $exerciseId = null;
+
+        foreach ($exerciseData as $exercise) {
+            if ($exercise->exercises_id !== $exerciseId) {
+                $seriesKey = $exercise->exercises_id;
+                $exercises[$seriesKey] = (object)[
+                    'id' => $exercise->exercises_id, //todo utilizar uuid e na chave do array
+                    'name' => $exercise->exercises_name,
+                ];
+                $exerciseId = $exercise->exercises_id;
+            }
+            $exercises[$seriesKey]->series[] = ExerciseRepetitionResource::getSeries(
+                $exercise->exercises_repetitions_id,
+                $exercise->exercises_id,
+                $exercise->exercises_repetitions_weight,
+                $exercise->exercises_repetitions_repetitions,
+                $exercise->exercises_repetitions_rest
+            );
+        }
+        return array_values($exercises);
     }
 }

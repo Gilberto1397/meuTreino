@@ -20,4 +20,19 @@ class ExerciseResourceCollection extends ResourceCollection
     {
         return parent::toArray($request);
     }
+
+    public static function firstData($exercises)
+    {
+        $dados = [];
+
+        foreach ($exercises as $exercise) {
+            $dados[] = ExerciseResource::firstData($exercise);
+        }
+        return $dados;
+    }
+
+    public static function fullData($exerciseData)
+    {
+        return ExerciseResource::fullData($exerciseData);
+    }
 }

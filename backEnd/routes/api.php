@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware([])->controller(ExerciseController::class)->prefix('meus-exercicios')->group(function () {
+Route::middleware([])->controller(ExerciseController::class)->prefix('meus-exercicios')->group(function () { //todo MIDDLEWARE
     Route::post('', 'createExercise');
     Route::get('', 'getAll');
+    Route::get('/{id}', 'getExerciseByFilters');
 });
 
 Route::prefix('autenticacao')->controller(AuthController::class)->group(function () {

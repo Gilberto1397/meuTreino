@@ -6,6 +6,7 @@ use App\Http\Requests\CreateExerciseRequest;
 use App\Repositories\ExerciseRepositoryEloquent;
 use App\Services\CreateExerciseService;
 use App\Services\GetAllExercicesService;
+use App\Services\GetExerciseByFiltersService;
 
 class ExerciseController extends Controller
 {
@@ -28,6 +29,15 @@ class ExerciseController extends Controller
         return response()->json(
             ['error' => $resposta->getError(), 'data' => $resposta->getData()],
             $resposta->getStatusCode()
+        );
+    }
+
+    public function getExerciseByFilters()
+    {
+        $response = (new GetExerciseByFiltersService())->getExerciseByFilters(new ExerciseRepositoryEloquent(), 3);
+        return response()->json(
+            ['error' => $response->getError(), 'data' => $response->getData()],
+            $response->getStatusCode()
         );
     }
 }
