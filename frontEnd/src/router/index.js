@@ -10,16 +10,31 @@ const router = createRouter({
             path: '/',
             name: 'login',
             component: LoginView,
+            meta: {
+                exibirMenu: false,
+                itemDeMenu: false,
+                nomeItemMenu: 'Login'
+            }
         },
         {
             path: '/home',
             name: 'home',
             component: Home,
+            meta: {
+                exibirMenu: true,
+                itemDeMenu: true,
+                nomeItemMenu: 'Home'
+            }
         },
         {
             path: '/novo-exercicio',
             name: 'novoExercicio',
             component: CreateExercise,
+            meta: {
+                exibirMenu: true,
+                itemDeMenu: true,
+                nomeItemMenu: 'Novo Exercício'
+            }
         }
     ],
 })
