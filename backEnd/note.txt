@@ -11,3 +11,5 @@ utilizar phpstan, psalm ou outra ferramenta de análise estática
 adicionar um campo de observação na criação de exercícios em cada série
 
 testar ter 2 series mas só preencher 1
+
+botar check para permitir atulização
