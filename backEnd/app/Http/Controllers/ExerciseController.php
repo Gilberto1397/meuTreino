@@ -32,9 +32,16 @@ class ExerciseController extends Controller
         );
     }
 
-    public function getExerciseByFilters()
+    public function getExerciseByFilters($id) //todo refatorar para mais filtros
     {
-        $response = (new GetExerciseByFiltersService())->getExerciseByFilters(new ExerciseRepositoryEloquent(), 3);
+        if (!filter_var($id, FILTER_VALIDATE_INT) || empty($id)) {
+            return response()->json(
+                ['error' => $response->getError(), 'message' => 'ID inválido'],
+                500
+            );
+        }
+
+        $response = (new GetExerciseByFiltersService())->getExerciseByFilters(new ExerciseRepositoryEloquent(), $id);
         return response()->json(
             ['error' => $response->getError(), 'data' => $response->getData()],
             $response->getStatusCode()
