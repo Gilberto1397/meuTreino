@@ -3,7 +3,8 @@ import {ref, computed, watch, onMounted} from 'vue'
 import axios from 'axios';
 import {useRouter, useRoute} from 'vue-router';
 
-const update = ref(false);
+const isUpdate = ref(false);
+const isCreate = ref(false);
 
 const exercise = ref({
   name: '',
@@ -44,6 +45,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
     const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
 
     if (confirm('Exercício criado')) {
+      isCreate.value = false;
       routeBrowser.push('/home'); //todo usar nome da rota
     }
   } catch (error) {
@@ -55,7 +57,6 @@ const getExercise = async (id) => {
   try {
     const resposta = (await axios.get(`http://127.0.0.1:8000/api/v1/meus-exercicios/${id}`)).data;
     exercise.value = resposta.data[0];
-    console.log(exercise.value);
   } catch (error) {
     alert('DEU ERRO AO TRAZER EXERCÍCIO');
   }
@@ -65,10 +66,16 @@ const isShowExercise = async () => {
   const exerciseId = routeDetails.params?.id
 
   if (! exerciseId) {
+    isCreate.value = true;
     return;
   }
   await getExercise(exerciseId);
-  update.value = true;
+  isUpdate.value = true;
+}
+
+const updateActive = () => {
+  const switchElement = document.getElementById('switchUpdate');
+  isUpdate.value = ! switchElement.checked;
 }
 
 onMounted(async () => {
@@ -78,10 +85,16 @@ onMounted(async () => {
 
 <template>
   <section class="larguraTelaMedia">
+    <div class="form-check form-switch d-flex justify-content-center column-gap-2">
+      <input v-on:change="updateActive" class="form-check-input" type="checkbox" role="switch" id="switchUpdate">
+      <label class="form-check-label" for="switchUpdate">Atualizar exercício?</label>
+    </div>
+
     <form @submit.prevent="saveExercise">
       <div class="mb-3">
         <label for="exerciseName" class="form-label">Nome do Exercício</label>
         <input
+            :disabled="isUpdate"
             type="text"
             class="form-control"
             id="exerciseName"
@@ -93,6 +106,7 @@ onMounted(async () => {
       <div class="mb-3">
         <label for="series" class="form-label">Séries</label>
         <input
+            :disabled="isUpdate"
             type="number"
             class="form-control"
             id="series"
@@ -119,6 +133,7 @@ onMounted(async () => {
               <div class="col-md-4">
                 <label :for="`repetitions-${index}`" class="form-label">Repetições</label>
                 <input
+                    :disabled="isUpdate"
                     type="number"
                     class="form-control"
                     :id="`repetitions-${index}`"
@@ -130,6 +145,7 @@ onMounted(async () => {
               <div class="col-md-4">
                 <label :for="`weight-${index}`" class="form-label">Peso (kg)</label>
                 <input
+                    :disabled="isUpdate"
                     type="number"
                     class="form-control"
                     :id="`weight-${index}`"
@@ -142,6 +158,7 @@ onMounted(async () => {
               <div class="col-md-4">
                 <label :for="`rest-${index}`" class="form-label">Descanso (seg)</label>
                 <input
+                    :disabled="isUpdate"
                     type="number"
                     class="form-control"
                     :id="`rest-${index}`"
@@ -155,8 +172,8 @@ onMounted(async () => {
         </div>
       </div>
 
-      <button v-if="update" type="" class="btn btn-primary">Atualizar Exercício</button>
-      <button v-else type="submit" class="btn btn-primary">Criar Exercício</button>
+      <button v-if="isCreate" type="" class="btn btn-primary">Criar Exercício</button>
+      <button v-else type="" :disabled="isUpdate" class="btn btn-primary">Atualizar Exercício</button>
     </form>
   </section>
 </template>
