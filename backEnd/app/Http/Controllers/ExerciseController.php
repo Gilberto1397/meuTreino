@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateExerciseRequest;
+use App\Http\Requests\UpdateExerciseRequest;
 use App\Repositories\ExerciseRepositoryEloquent;
 use App\Services\CreateExerciseService;
 use App\Services\GetAllExercicesService;
@@ -46,5 +47,10 @@ class ExerciseController extends Controller
             ['error' => $response->getError(), 'data' => $response->getData()],
             $response->getStatusCode()
         );
+    }
+
+    public function updateExercise(UpdateExerciseRequest $request)
+    {
+        dd($request->all());
     }
 }
