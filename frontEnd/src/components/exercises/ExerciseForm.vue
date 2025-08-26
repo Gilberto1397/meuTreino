@@ -1,29 +1,33 @@
 <script setup>
-import {ref, computed, watch} from 'vue'
+import {ref, computed, watch, onMounted} from 'vue'
 import axios from 'axios';
 import {useRouter, useRoute} from 'vue-router';
 
-const exerciseName = ref('');
-const seriesCount = ref('');
-const seriesData = ref([]);
+const update = ref(false);
+
+const exercise = ref({
+  name: '',
+  seriesCount: null,
+  serie: []
+});
 
 const routeBrowser = useRouter();
 const routeDetails = useRoute();
 
 // Computed para garantir que o número de séries seja válido
 const validSeriesCount = computed(() => {
-  const count = parseInt(seriesCount.value)
+  const count = parseInt(exercise.value.seriesCount)
   return isNaN(count) || count < 1 ? 0 : count
 })
 
 // Observa mudanças no número de séries e atualiza o array de dados
 watch(validSeriesCount, (newCount) => {
-  const currentLength = seriesData.value.length
+  const currentLength = exercise.value.serie.length
 
   if (newCount > currentLength) {
     // Adiciona novas séries
     for (let i = currentLength; i < newCount; i++) {
-      seriesData.value.push({
+      exercise.value.serie.push({
         repetitions: '',
         weight: '',
         rest: ''
@@ -31,27 +35,45 @@ watch(validSeriesCount, (newCount) => {
     }
   } else if (newCount < currentLength) {
     // Remove séries excedentes
-    seriesData.value = seriesData.value.slice(0, newCount)
+    exercise.value.serie = exercise.value.serie.slice(0, newCount)
   }
 })
 
 const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REPETIÇÕES, PESO E DESCANSO?
   try {
-    const exerciseDetails = {
-      name: exerciseName.value,
-      serie: seriesData.value
-    };
-
-    const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exerciseDetails)).data;
+    const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
 
     if (confirm('Exercício criado')) {
-      routeBrowser.push('/home');
+      routeBrowser.push('/home'); //todo usar nome da rota
     }
   } catch (error) {
     alert('DEU ERRO AO CRIAR EXERCÍCIO');
   }
-
 }
+
+const getExercise = async (id) => {
+  try {
+    const resposta = (await axios.get(`http://127.0.0.1:8000/api/v1/meus-exercicios/${id}`)).data;
+    exercise.value = resposta.data[0];
+    console.log(exercise.value);
+  } catch (error) {
+    alert('DEU ERRO AO TRAZER EXERCÍCIO');
+  }
+}
+
+const isShowExercise = async () => {
+  const exerciseId = routeDetails.params?.id
+
+  if (! exerciseId) {
+    return;
+  }
+  await getExercise(exerciseId);
+  update.value = true;
+}
+
+onMounted(async () => {
+  await isShowExercise();
+})
 </script>
 
 <template>
@@ -63,7 +85,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
             type="text"
             class="form-control"
             id="exerciseName"
-            v-model="exerciseName"
+            v-model="exercise.name"
             placeholder="Digite o nome do exercício"
         >
       </div>
@@ -74,7 +96,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
             type="number"
             class="form-control"
             id="series"
-            v-model="seriesCount"
+            v-model="exercise.seriesCount"
             placeholder="Número de séries"
             min="1"
         >
@@ -85,7 +107,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
         <h5 class="mb-3">Detalhes das Séries</h5>
 
         <div
-            v-for="(serie, index) in seriesData"
+            v-for="(serie, index) in exercise.serie"
             :key="index"
             class="card mb-3"
         >
@@ -133,7 +155,8 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Criar Exercício</button>
+      <button v-if="update" type="" class="btn btn-primary">Atualizar Exercício</button>
+      <button v-else type="submit" class="btn btn-primary">Criar Exercício</button>
     </form>
   </section>
 </template>

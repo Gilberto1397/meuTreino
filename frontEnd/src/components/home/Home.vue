@@ -23,7 +23,7 @@ onMounted(async () => {
         <h6 class="card-subtitle mb-2 text-body-secondary">REPETIÇÕES - {{exercise.firstRepetitions}}</h6>
         <h6 class="card-subtitle mb-2 text-body-secondary">PESO - {{exercise.firstWeight}}</h6>
         <h6 class="card-subtitle mb-2 text-body-secondary">DESCANSO - {{exercise.firstRest}}</h6>
-        <a href="#" class="card-link">Card link</a>
+        <router-link :to="{name: 'editarExercicio', params: { id: exercise.id }}" href="#" class="card-link">+Mais informações</router-link>
       </div>
     </div>
   </section>

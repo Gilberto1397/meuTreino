@@ -15,6 +15,6 @@ class GetAllExercicesService
      */
     public function getAll(ExerciseRepository $repository): OrganizeResponse
     {
-        return new OrganizeResponse(200, '', new ExerciseResourceCollection($repository->getAll()));
+        return new OrganizeResponse(200, '', ExerciseResourceCollection::firstData($repository->getAll()));
     }
 }
