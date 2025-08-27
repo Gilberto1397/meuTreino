@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\Http\Requests\CreateExerciseRequest;
+use App\Http\Requests\UpdateExerciseRequest;
 use App\Models\Exercise;
 
 interface ExerciseRepository
@@ -22,4 +23,6 @@ interface ExerciseRepository
     public function getAll(): array;
 
     public function getExerciseByFilters(int $id): array;
+
+    public function updateExercise(UpdateExerciseRequest $request): bool;
 }

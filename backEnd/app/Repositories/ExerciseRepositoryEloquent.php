@@ -4,8 +4,10 @@ namespace App\Repositories;
 
 use App\Contracts\ExerciseRepository;
 use App\Http\Requests\CreateExerciseRequest;
+use App\Http\Requests\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseRepetition;
+use Illuminate\Support\Facades\DB;
 
 class ExerciseRepositoryEloquent implements ExerciseRepository
 {
@@ -78,5 +80,53 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             where exercises_id = :id
             order by exercises_name, exercises_repetitions_id
         ', [':id' => $id])->all();
+    }
+
+    public function updateExercise(UpdateExerciseRequest $request): bool
+    {
+        DB::beginTransaction();
+
+        if (empty($request->exerciseId) || ! $exercise = Exercise::find($request->exerciseId)) {
+            db::rollBack();
+            throw new \DomainException('Exercício não encontrado!');
+        }
+        $updated = $exercise->update([
+            'exercises_name' => $request->name,
+            'exercises_users' => 1, //todo tirar valor fixo
+        ]);
+
+        if (! $updated) {
+            db::rollBack();
+            throw new \DomainException('Falha ao atualizar o exercício!');
+        }
+        if (!empty($request->serie)) {
+            $repetitions = [];
+
+            $deletedRepetitions = DB::delete(
+                'delete from exercises_repetitions where exercises_repetitions_exercises = :id',
+                [':id' => $exercise->exercises_id]
+            );
+
+            if (!is_int($deletedRepetitions)) {
+                db::rollBack();
+                throw new \DomainException('Falha ao atualizar as séries do exercício!');
+            }
+
+            foreach ($request->serie as $serie) { //TODO TRANSFORMA EM MÉTODO E REUTILIZAR AKI E NO CREATE
+                $repetitions[] = [
+                    'exercises_repetitions_exercises' => $exercise->exercises_id,
+                    'exercises_repetitions_weight' => $serie['weight'],
+                    'exercises_repetitions_repetitions' => $serie['repetitions'],
+                    'exercises_repetitions_rest' => $serie['rest'],
+                ];
+            }
+
+            if (!ExerciseRepetition::insert($repetitions)) {
+                db::rollBack();
+                throw new \DomainException('Falha ao atualizar as séries do exercício!');
+            }
+        }
+        DB::commit();
+        return true;
     }
 }
