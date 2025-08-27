@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use DomainException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,6 +43,13 @@ class Handler extends ExceptionHandler
                     'error' => true,
                 ], $exception->getCode());
             }
+        });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            return response()->json([
+                'messages' => $e->errors(),
+                'error' => $e->getResponse()->original['error'],
+            ], 406);
         });
 
         $this->renderable(function (\Throwable $exception, $request) {

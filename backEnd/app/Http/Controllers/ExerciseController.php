@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateExerciseRequest;
+use App\Http\Requests\UpdateExerciseRequest;
 use App\Repositories\ExerciseRepositoryEloquent;
 use App\Services\CreateExerciseService;
 use App\Services\GetAllExercicesService;
 use App\Services\GetExerciseByFiltersService;
+use App\Services\UpdateExerciseService;
 
 class ExerciseController extends Controller
 {
@@ -46,5 +48,21 @@ class ExerciseController extends Controller
             ['error' => $response->getError(), 'data' => $response->getData()],
             $response->getStatusCode()
         );
+    }
+
+    public function updateExercise(UpdateExerciseRequest $request)
+    {
+        try {
+            $response = (new UpdateExerciseService())->updateExercise(new ExerciseRepositoryEloquent(), $request);
+            return response()->json(
+                ['mensagem' => $response->getMessage(), 'error' => $response->getError()],
+                $response->getStatusCode()
+            );
+        } catch (\DomainException $exception) {
+            return response()->json([
+                'mensagem' => $exception->getMessage(),
+                'error' => true,
+            ], 500);
+        }
     }
 }
