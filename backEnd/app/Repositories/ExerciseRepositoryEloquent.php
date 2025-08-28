@@ -20,7 +20,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     {
         $exercise = Exercise::create([
             'exercises_name' => $request->name,
-            'exercises_users' => 1, //todo tirar valor fixo
+            'exercises_users' => auth()->user()->id,
         ]);
 
         if (!$exercise instanceof Exercise) {
@@ -92,7 +92,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         }
         $updated = $exercise->update([
             'exercises_name' => $request->name,
-            'exercises_users' => 1, //todo tirar valor fixo
+            'exercises_users' => auth()->user()->id,
         ]);
 
         if (! $updated) {
