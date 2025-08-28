@@ -1,6 +1,6 @@
 <script setup>
 import {ref, computed, watch, onMounted} from 'vue'
-import axios from 'axios';
+import axiosProvider from "@/providers/AxiosProvider.js";
 import {useRouter, useRoute} from 'vue-router';
 
 const isUpdate = ref(false);
@@ -51,7 +51,7 @@ const createOrUpdate = async () => {
 
 const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REPETIÇÕES, PESO E DESCANSO?
   try {
-    const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
+    const resposta = (await axiosProvider.post('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
 
     if (confirm('Exercício criado')) {
       isCreate.value = false;
@@ -64,7 +64,7 @@ const saveExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REP
 
 const updateExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS REPETIÇÕES, PESO E DESCANSO?
   try {
-    const resposta = (await axios.put('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
+    const resposta = (await axiosProvider.put('http://127.0.0.1:8000/api/v1/meus-exercicios', exercise.value)).data;
 
     if (confirm('Exercício atualizado!')) {
       isUpdate.value = false;
@@ -77,7 +77,7 @@ const updateExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS R
 
 const getExercise = async (id) => {
   try {
-    const resposta = (await axios.get(`http://127.0.0.1:8000/api/v1/meus-exercicios/${id}`)).data;
+    const resposta = (await axiosProvider.get(`http://127.0.0.1:8000/api/v1/meus-exercicios/${id}`)).data;
     exercise.value = resposta.data[0];
   } catch (error) {
     alert('DEU ERRO AO TRAZER EXERCÍCIO');

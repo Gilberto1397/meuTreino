@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from "axios";
+import axiosProvider from "@/providers/AxiosProvider.js";
 import { useRouter, useRoute } from 'vue-router';
 
 const routeBrowser = useRouter();
@@ -41,7 +41,7 @@ const handleLogin = async () => {
         password: loginForm.value.password
       }
 
-      const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
+      const resposta = (await axiosProvider.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
       localStorage.setItem('meuTreinoLoginToken', resposta.access_token);
       routeBrowser.push('/home');
     }

@@ -17,6 +17,7 @@ testar ter 2 series mas só preencher 1
 botar check para permitir atulização
 
 TESTAR TENTAR CRIAR TOKEN MANUALMENTE PARA VER SE ACESSA E ENTÃO REQUISITAR EM TODAS AS ROTAS
+e fazer um check no token utilizado - man in the middle
 
 
 Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/MariaDB),

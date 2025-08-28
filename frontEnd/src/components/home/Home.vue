@@ -1,11 +1,11 @@
 <script setup>
-import axios from "axios";
+import axiosProvider from "@/providers/AxiosProvider.js";
 import {onMounted, ref} from "vue";
 
 const exercicesList = ref([]);
 
 const getExercises = async () => {
-  const response = (await axios.get('http://127.0.0.1:8000/api/v1/meus-exercicios')).data;
+  const response = (await axiosProvider.get('http://127.0.0.1:8000/api/v1/meus-exercicios')).data;
   exercicesList.value = response.data;
 }
 
