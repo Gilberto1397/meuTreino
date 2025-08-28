@@ -15,11 +15,13 @@ return [
     |
     */
 
+    //todo ajustar para produção
+
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [env('APP_URL_FRONTEND')],
 
     'allowed_origins_patterns' => [],
 
@@ -30,5 +32,4 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
-
 ];
