@@ -16,7 +16,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['email', 'password']); //TODO ALTERAR CAMPOS DE LOGIN E NOME DO CAMPO DE SENHA
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => true, 'message' => 'Dados informados inválidos'], 401);
