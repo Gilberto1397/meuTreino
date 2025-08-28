@@ -24,7 +24,7 @@ Route::middleware(['auth:api'])->controller(ExerciseController::class)->prefix('
 
 Route::prefix('autenticacao')->controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
-    Route::post('logout', 'logout');
+    Route::delete('logout', 'logout');
 //    Route::post('refresh', 'refresh');
 //    Route::get('me', 'me');
 });

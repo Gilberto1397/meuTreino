@@ -1,8 +1,10 @@
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {computed} from "vue";
+import axiosProvider from "@/providers/AxiosProvider.js";
 
 const routeDetails = useRoute();
+const routeBrowser = useRouter();
 const props = defineProps({
   routes: {
     type: Array,
@@ -14,10 +16,19 @@ const routeName = computed(() => {
   return routeDetails.name;
 })
 
+const logout = async () => {
+  await axiosProvider.delete('autenticacao/logout');
+  localStorage.removeItem('meuTreinoLoginToken');
+
+  routeBrowser.push({
+    name: 'login'
+  });
+}
+
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-primary mb-5">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,6 +44,10 @@ const routeName = computed(() => {
             </router-link>
           </li>
         </ul>
+      </div>
+
+      <div>
+        <button v-on:click="logout()" type="button" class="btn btn-outline-light">Logout</button>
       </div>
     </div>
   </nav>

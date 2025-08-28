@@ -37,6 +37,7 @@ class AuthController extends Controller
 
     /**
      * Log the user out (Invalidate the token).
+     * todo fazer try catch - caso falhe fazer log
      *
      * @return \Illuminate\Http\JsonResponse
      */
