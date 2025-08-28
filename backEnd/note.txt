@@ -13,3 +13,9 @@ adicionar um campo de observação na criação de exercícios em cada série
 testar ter 2 series mas só preencher 1
 
 botar check para permitir atulização
+
+
+
+
+Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/MariaDB),
+ segurança com HTTPS (via Let's Encrypt), ou até deploy automatizado com Git. Qual parte você quer explorar agora?
