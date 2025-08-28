@@ -19,6 +19,8 @@ botar check para permitir atulização
 TESTAR TENTAR CRIAR TOKEN MANUALMENTE PARA VER SE ACESSA E ENTÃO REQUISITAR EM TODAS AS ROTAS
 e fazer um check no token utilizado - man in the middle
 
+fazer tela de cadastro.
+
 
 Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/MariaDB),
  segurança com HTTPS (via Let's Encrypt), ou até deploy automatizado com Git. Qual parte você quer explorar agora?
