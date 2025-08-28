@@ -89,6 +89,7 @@ const isShowExercise = async () => {
 
   if (! exerciseId) {
     isCreate.value = true;
+    isUpdate.value = true;
     return;
   }
   await getExercise(exerciseId);
@@ -107,7 +108,7 @@ onMounted(async () => {
 
 <template>
   <section class="larguraTelaMedia">
-    <div class="form-check form-switch d-flex justify-content-center column-gap-2">
+    <div v-if="! isCreate" class="form-check form-switch d-flex justify-content-center column-gap-2">
       <input v-on:change="updateActive" class="form-check-input" type="checkbox" role="switch" id="switchUpdate">
       <label class="form-check-label" for="switchUpdate">Atualizar exercício?</label>
     </div>
