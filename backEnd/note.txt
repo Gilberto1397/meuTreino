@@ -22,7 +22,8 @@ e fazer um check no token utilizado - man in the middle
 fazer tela de cadastro.
 
 ajustar segurança - CORS, rate limit, helmet / api e front
-
+    jwt em cookie http only
+    headers permitidos
 
 Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/MariaDB),
  segurança com HTTPS (via Let's Encrypt), ou até deploy automatizado com Git. Qual parte você quer explorar agora?

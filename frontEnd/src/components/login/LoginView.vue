@@ -35,18 +35,19 @@ const validateForm = () => { //todo utilizar gup para validação
 const handleLogin = async () => {
   try {
     if (validateForm()) {
-      loading.value = true
+      loading.value = true;
       const dados = {
         email: loginForm.value.email,
         password: loginForm.value.password
-      }
+      };
 
-      const resposta = (await axiosProvider.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
+      const resposta = (await axiosProvider.post('autenticacao/login', dados)).data;
       localStorage.setItem('meuTreinoLoginToken', resposta.access_token);
       routeBrowser.push('/home');
     }
   } catch (error) {
     alert('DEU ERRO AO LOGAR');
+    loading.value = false;
   }
 }
 

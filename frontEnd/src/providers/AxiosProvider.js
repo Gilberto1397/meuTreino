@@ -6,7 +6,7 @@ const axiosProvider = axios.create({
         'Accept': 'application/json',
         'Content': 'application/json'
     },
-    withCredentials: true
+    withCredentials: false
 })
 
 axiosProvider.interceptors.request.use((config) => {
