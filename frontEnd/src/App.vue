@@ -13,7 +13,7 @@ const routeDetails = useRoute();
   />
 
   <main id="boxPrincipal" class="w-100 px-3">
-    <router-view/>
+    <router-view :key="$route.name"/> <!-- key para forçar reload do componente -->
   </main>
 </template>
 
