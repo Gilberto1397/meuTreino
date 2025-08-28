@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from "axios";
 import { useRouter, useRoute } from 'vue-router';
 
@@ -42,13 +42,25 @@ const handleLogin = async () => {
       }
 
       const resposta = (await axios.post('http://127.0.0.1:8000/api/v1/autenticacao/login', dados)).data;
-      localStorage.setItem('token', resposta.access_token);
+      localStorage.setItem('meuTreinoLoginToken', resposta.access_token);
       routeBrowser.push('/home');
     }
   } catch (error) {
     alert('DEU ERRO AO LOGAR');
   }
 }
+
+const isNotLogged = () => {
+  if (Boolean(routeDetails.query.naologado)) {
+    setTimeout(() => {
+      alert('Ooops. Parece que você ainda não está logado!'); //todo usar sweetalert
+    }, 1000)
+  }
+}
+
+onMounted(() => {
+  isNotLogged();
+});
 </script>
 
 <template>

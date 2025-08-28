@@ -11,6 +11,7 @@ const router = createRouter({
             name: 'login',
             component: LoginView,
             meta: {
+                public: true,
                 exibirMenu: false,
                 itemDeMenu: false,
                 nomeItemMenu: 'Login'
@@ -21,6 +22,7 @@ const router = createRouter({
             name: 'home',
             component: Home,
             meta: {
+                public: false,
                 exibirMenu: true,
                 itemDeMenu: true,
                 nomeItemMenu: 'Home'
@@ -31,6 +33,7 @@ const router = createRouter({
             name: 'novoExercicio',
             component: ExerciseForm,
             meta: {
+                public: false,
                 exibirMenu: true,
                 itemDeMenu: true,
                 nomeItemMenu: 'Novo Exercício'
@@ -41,12 +44,30 @@ const router = createRouter({
             name: 'editarExercicio',
             component: ExerciseForm,
             meta: {
+                public: false,
                 exibirMenu: true,
                 itemDeMenu: false,
                 nomeItemMenu: 'Editar Exercício'
             }
         }
     ],
+});
+
+router.beforeEach((routeTo, routeFrom, next) => {
+    //const authenticationStore = useAuthenticationStore();
+
+    if (!routeTo.meta.public && !localStorage.getItem('meuTreinoLoginToken')) {
+        next({
+            name: 'login',
+            query: {naologado: true}
+        });
+    }
+
+    if (routeTo.path === '/login' && localStorage.getItem('meuTreinoLoginToken')) {
+        next({name: 'home'});
+    }
+    next();
 })
+
 
 export default router
