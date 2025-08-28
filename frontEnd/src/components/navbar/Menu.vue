@@ -1,8 +1,10 @@
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {computed} from "vue";
+import axiosProvider from "@/providers/AxiosProvider.js";
 
 const routeDetails = useRoute();
+const routeBrowser = useRouter();
 const props = defineProps({
   routes: {
     type: Array,
@@ -13,6 +15,15 @@ const props = defineProps({
 const routeName = computed(() => {
   return routeDetails.name;
 })
+
+const logout = async () => {
+  await axiosProvider.delete('autenticacao/logout');
+  localStorage.removeItem('meuTreinoLoginToken');
+
+  routeBrowser.push({
+    name: 'login'
+  });
+}
 
 </script>
 
@@ -33,6 +44,10 @@ const routeName = computed(() => {
             </router-link>
           </li>
         </ul>
+      </div>
+
+      <div>
+        <button v-on:click="logout()" type="button" class="btn btn-outline-light">Logout</button>
       </div>
     </div>
   </nav>

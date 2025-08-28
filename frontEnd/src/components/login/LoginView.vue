@@ -43,7 +43,7 @@ const handleLogin = async () => {
 
       const resposta = (await axiosProvider.post('autenticacao/login', dados)).data;
       localStorage.setItem('meuTreinoLoginToken', resposta.access_token);
-      routeBrowser.push('/home');
+      routeBrowser.push({name: 'home'});
     }
   } catch (error) {
     alert('DEU ERRO AO LOGAR');
