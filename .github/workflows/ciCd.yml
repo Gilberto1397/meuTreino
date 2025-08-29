@@ -23,9 +23,9 @@ jobs:
           script: |
             cd /minhaHome/projetos/meuTreino
             git fetch --all -p
-            123456
+            ${{secrets.VPS_GIT_PASSWORD}}
             git pull origin master
-            123456
+            ${{secrets.VPS_GIT_PASSWORD}}
             docker start container-meu-treino
             docker exec -it container-meu-treino bash
             cd backEnd
