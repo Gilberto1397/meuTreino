@@ -1,0 +1,54 @@
+name: meuTreino CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deployApi:
+    #needs: laravel-tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Deploy API to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          #port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /minhaHome/projetos/meuTreino
+            git fetch --all -p
+            git pull origin master
+            docker start container-meu-treino
+            docker exec -it container-meu-treino bash
+            cd backEnd
+            composer install --no-dev --optimize-autoloader
+            php artisan config:cache
+            php artisan route:cache
+            php artisan cache:clear
+            php artisan serve --host=0.0.0.0 --port=8000
+
+  deployFront:
+    needs: deployApi
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Deploy Front to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          #  port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /minhaHome/projetos/meuTreino
+            docker start container-meu-treino
+            docker exec -it container-meu-treino bash
+            cd frontEnd
+            npm run dev -- --host 0.0.0.0 --port 5173           
