@@ -43,11 +43,12 @@ jobs:
             docker start container-meu-treino
             docker exec -it container-meu-treino bash
             cd backEnd
-            composer install --no-dev --optimize-autoloader
-            php artisan config:cache
-            php artisan route:cache
-            php artisan cache:clear
-            php artisan serve --host=0.0.0.0 --port=8000
+            whoami
+#            composer install --no-dev --optimize-autoloader
+#            php artisan config:cache
+#            php artisan route:cache
+#            php artisan cache:clear
+#            php artisan serve --host=0.0.0.0 --port=8000
 
 #  deployFront:
 #    needs: deployApi
