@@ -41,7 +41,7 @@ jobs:
             git fetch --all -p
             git pull origin master
             docker start container-meu-treino
-            docker exec -it container-meu-treino bash
+            docker exec container-meu-treino bash
             cd backEnd
             whoami
 #            composer install --no-dev --optimize-autoloader
