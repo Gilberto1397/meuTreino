@@ -36,6 +36,8 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             cd projetos/meuTreino
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/meu-github
             git fetch --all -p
             git pull origin master
             docker start container-meu-treino
@@ -47,21 +49,21 @@ jobs:
             php artisan cache:clear
             php artisan serve --host=0.0.0.0 --port=8000
 
-  deployFront:
-    needs: deployApi
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy Front to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_SSH_PORT }}
-
-          script: |
-            cd projetos/meuTreino
-            docker exec -it container-meu-treino bash
-            cd frontEnd
-            npm run dev -- --host 0.0.0.0 --port 5173
+#  deployFront:
+#    needs: deployApi
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Deploy Front to VPS
+#        uses: appleboy/ssh-action@v1
+#        with:
+#          host: ${{ secrets.VPS_HOST }}
+#          username: ${{ secrets.VPS_USERNAME }}
+#          key: ${{ secrets.VPS_SSH_KEY }}
+#          port: ${{ secrets.VPS_SSH_PORT }}
+#
+#          script: |
+#            cd projetos/meuTreino
+#            docker exec -it container-meu-treino bash
+#            cd frontEnd
+#            npm run dev -- --host 0.0.0.0 --port 5173
