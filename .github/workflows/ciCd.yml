@@ -62,7 +62,6 @@ jobs:
 
           script: |
             cd /projetos/meuTreino
-            docker start container-meu-treino
             docker exec -it container-meu-treino bash
             cd frontEnd
             npm run dev -- --host 0.0.0.0 --port 5173
