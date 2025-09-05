@@ -64,8 +64,6 @@ jobs:
 
           script: |
             cd projetos/meuTreino
-            docker stop container-meu-treino || true
-            docker start container-meu-treino
             docker exec container-meu-treino bash -c "
             cd frontEnd &&
             npm run dev -- --host 0.0.0.0 --port 5173 &"
