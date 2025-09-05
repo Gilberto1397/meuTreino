@@ -35,18 +35,24 @@ jobs:
           password: ${{ secrets.VPS_GIT_PASSWORD }}
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-                    cd projetos/meuTreino
-                    eval "$(ssh-agent -s)"
-                    ssh-add ~/.ssh/meu-github
-                    git fetch --all -p
-                    git pull origin master
-                    docker start container-meu-treino
-                    docker exec container-meu-treino bash -c "
-                    cd backEnd &&
-                    php artisan config:cache &&
-                    php artisan route:cache &&
-                    php artisan cache:clear &&
-                    php artisan serve --host=0.0.0.0 --port=8000 &"
+            cd projetos/meuTreino
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/meu-github
+            git fetch --all -p
+            git pull origin master
+
+#           Para o container se estiver rodando TODO PARANDO O SERVIDOR SEMPRE
+            docker stop container-meu-treino || true
+            
+#           Reconstrói e inicia o container
+            docker start container-meu-treino
+                    
+            docker exec container-meu-treino bash -c "
+            cd backEnd &&
+            php artisan config:cache &&
+            php artisan route:cache &&
+            php artisan cache:clear &&
+            php artisan serve --host=0.0.0.0 --port=8000 &"
 
   deployFront:
     needs: deployApi
@@ -63,6 +69,13 @@ jobs:
 
           script: |
             cd projetos/meuTreino
+
+#           Para o container se estiver rodando TODO PARANDO O SERVIDOR SEMPRE
+            docker stop container-meu-treino || true
+  
+#           Reconstrói e inicia o container
+            docker start container-meu-treino
+  
             docker exec container-meu-treino bash -c "
             cd frontEnd &&
             npm run dev -- --host 0.0.0.0 --port 5173 &"
