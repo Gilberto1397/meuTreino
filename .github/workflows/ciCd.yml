@@ -40,11 +40,9 @@ jobs:
             ssh-add ~/.ssh/meu-github
             git fetch --all -p
             git pull origin master
-
-#           Para o container se estiver rodando TODO PARANDO O SERVIDOR SEMPRE
+            
             docker stop container-meu-treino || true
             
-#           Reconstrói e inicia o container
             docker start container-meu-treino
                     
             docker exec container-meu-treino bash -c "
@@ -69,11 +67,9 @@ jobs:
 
           script: |
             cd projetos/meuTreino
-
-#           Para o container se estiver rodando TODO PARANDO O SERVIDOR SEMPRE
+            
             docker stop container-meu-treino || true
   
-#           Reconstrói e inicia o container
             docker start container-meu-treino
   
             docker exec container-meu-treino bash -c "
