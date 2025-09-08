@@ -66,4 +66,4 @@ jobs:
             cd projetos/meuTreino
             docker exec container-meu-treino bash -c "
             cd frontEnd &&
-            pwd"
+            nvm current"
