@@ -65,4 +65,5 @@ jobs:
           script: |
             cd projetos/meuTreino
             docker exec container-meu-treino bash -c "
-            whoami"
+            cd frontEnd &&
+            pwd"
