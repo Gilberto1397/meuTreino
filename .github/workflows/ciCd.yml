@@ -23,7 +23,7 @@ jobs:
 
 
   deployApi:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Deploy API to VPS
@@ -51,7 +51,7 @@ jobs:
 
   deployFront:
     needs: deployApi
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Deploy Front to VPS
@@ -64,5 +64,6 @@ jobs:
 
           script: |
             docker exec container-meu-treino bash -c "
+            source ~/.nvm/nvm.sh &&
             cd frontEnd &&
             npm run dev -- --host 0.0.0.0 --port 5173 &"
