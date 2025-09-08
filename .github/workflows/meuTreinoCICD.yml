@@ -20,19 +20,24 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: composer install
+      - name: jwt key
+        run: php artisan jwt:secret
       - name: Generate key
         run: php artisan key:generate
+      - name: seed database
+        run: php artisan db:seed
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Create Database
         run: |
-          mkdir -p database
           touch database/database.sqlite
-      - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+      - name: migrate database
+        run: php artisan migrate
+      - name: Run Tests
         run: php artisan test
 
   deployApi:
