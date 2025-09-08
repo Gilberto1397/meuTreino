@@ -1,9 +1,5 @@
 apache - domínio - modo produção
 
-ajustar rotas setadas hardcode
-
-
-
 tentar usar o lembrar-me e email verificado
 
 contar o número de vezes que o usuário fez aquele exercício - somar tanto no grupo de exercícios quanto exercício unitário
