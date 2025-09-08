@@ -65,8 +65,4 @@ jobs:
           script: |
             cd projetos/meuTreino
             docker exec container-meu-treino bash -c "
-            cd frontEnd &&
-            export NVM_DIR="$HOME/.nvm" &&
-            source "$NVM_DIR/nvm.sh" &&
-            nvm use node &&
-            npm run dev -- --host 0.0.0.0 --port 5173 &
+            nvm --version"
