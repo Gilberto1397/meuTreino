@@ -65,5 +65,4 @@ jobs:
           script: |
             cd projetos/meuTreino
             docker exec container-meu-treino bash -c "
-            cd frontEnd &&
-            npm --version &"
+            whoami"
