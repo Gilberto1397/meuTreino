@@ -1,8 +1,8 @@
 name: meuTreino CI/CD
 
 on:
-  pull_request:
-    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
   push:
     branches: [ "*" ]
 
@@ -43,7 +43,7 @@ jobs:
   deployApi:
     needs: laravel-tests
     runs-on: ubuntu-22.04
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
       - name: Deploy API to VPS
