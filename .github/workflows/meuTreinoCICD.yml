@@ -20,24 +20,24 @@ jobs:
         with:
           php-version: '7.4'
       - uses: actions/checkout@v4
-      - name: Copy .env
+      - name: Cria arquivo .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - name: Install Dependencies
+      - name: Instala dependências do Laravel
         run: composer install
-      - name: jwt key
+      - name: Cria a chave JWT
         run: php artisan jwt:secret
-      - name: Generate key
+      - name: Gera a chave do Laravel
         run: php artisan key:generate
-      - name: Directory Permissions
+      - name: Ajusta permissões das pastas de storage e cache
         run: chmod -R 777 storage bootstrap/cache
-      - name: Create Database
+      - name: Cria arquivo database.sqlite
         run: |
           touch database/database.sqlite
-      - name: migrate database
+      - name: Executa as migrações
         run: php artisan migrate
-      - name: seed database
+      - name: Executa a criação de seeders
         run: php artisan db:seed
-      - name: Run Tests
+      - name: Executa os testes automatizados
         run: php artisan test
 
   deployApi:
