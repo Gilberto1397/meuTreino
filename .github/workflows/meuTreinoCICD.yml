@@ -1,29 +1,48 @@
 name: meuTreino CI/CD
 
 on:
+#  pull_request:
+#    branches: [ "master" ]
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: [ "*" ]
 
 jobs:
-  #  build:
-  #    name: Build teste
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - name: Execute remote SSH commands using password
-  #        uses: appleboy/ssh-action@v1
-  #        with:
-  #          host: ${{ secrets.VPS_HOST }}
-  #          username: ${{ secrets.VPS_USERNAME }}
-  #          key: ${{ secrets.VPS_SSH_KEY }}
-  #          password: ${{ secrets.VPS_GIT_PASSWORD }}
-  #          port: '22'
-  #          script: whoami
 
+  laravel-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backEnd
+
+    steps:
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '7.4'
+      - uses: actions/checkout@v4
+      - name: Cria arquivo .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Instala dependências do Laravel
+        run: composer install
+      - name: Cria a chave JWT
+        run: php artisan jwt:secret
+      - name: Gera a chave do Laravel
+        run: php artisan key:generate
+      - name: Ajusta permissões das pastas de storage e cache
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Cria arquivo database.sqlite
+        run: |
+          touch database/database.sqlite
+      - name: Executa as migrações
+        run: php artisan migrate
+      - name: Executa a criação de seeders
+        run: php artisan db:seed
+      - name: Executa os testes automatizados
+        run: php artisan test
 
   deployApi:
+    needs: laravel-tests
     runs-on: ubuntu-22.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
       - name: Deploy API to VPS

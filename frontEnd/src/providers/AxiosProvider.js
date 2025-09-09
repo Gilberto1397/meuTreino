@@ -10,7 +10,6 @@ const axiosProvider = axios.create({
 })
 
 axiosProvider.interceptors.request.use((config) => {
-    //const xsrfToken = getCookie('XSRF-TOKEN'); // Usando a função do exemplo anterior
     const jwtToken = localStorage.getItem('meuTreinoLoginToken');
 
     if (jwtToken) {

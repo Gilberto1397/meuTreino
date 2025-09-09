@@ -1,9 +1,5 @@
 apache - domínio - modo produção
 
-ajustar rotas setadas hardcode
-
-
-
 tentar usar o lembrar-me e email verificado
 
 contar o número de vezes que o usuário fez aquele exercício - somar tanto no grupo de exercícios quanto exercício unitário
@@ -19,8 +15,6 @@ utilizar phpstan, psalm ou outra ferramenta de análise estática
 adicionar um campo de observação na criação de exercícios em cada série
 
 testar ter 2 series mas só preencher 1
-
-botar check para permitir atulização
 
 TESTAR TENTAR CRIAR TOKEN MANUALMENTE PARA VER SE ACESSA E ENTÃO REQUISITAR EM TODAS AS ROTAS
 e fazer um check no token utilizado - man in the middle
