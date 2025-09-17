@@ -25,6 +25,7 @@ Este projeto é uma aplicação web para gerenciamento de treinos, composta por 
   composer install
   cp .env.example .env
   php artisan key:generate
+  php artisan jwt:secret
   php artisan migrate
   php artisan serve
 ```
