@@ -64,6 +64,8 @@ class Handler extends ExceptionHandler
 //                    ]
 //                );
 
+            dd($exception);
+
             return response()->json([
                 'message' => 'Ooops, parece que houve um erro. Contate o suporte!',
                 'error' => true,
