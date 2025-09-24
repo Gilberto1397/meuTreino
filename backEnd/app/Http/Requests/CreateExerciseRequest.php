@@ -11,7 +11,7 @@ class CreateExerciseRequest extends BaseExerciseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:exercises,exercises_name'],
             'serie' => ['array'],
             'serie.*.weight' => ['required', 'numeric', 'min:1'],
             'serie.*.repetitions' => ['required', 'integer', 'min:1'],
