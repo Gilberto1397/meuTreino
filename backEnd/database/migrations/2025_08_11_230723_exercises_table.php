@@ -15,7 +15,7 @@ class ExercisesTable extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->increments('exercises_id');
-            $table->string('exercises_name');
+            $table->string('exercises_name')->unique();
             $table->unsignedBigInteger('exercises_users');
 
             $table
