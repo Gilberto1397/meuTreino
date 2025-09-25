@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Exercise;
+use Illuminate\Validation\Rule;
+
 /**
  * @property string $name
  * @property string|null $exerciseDetails
@@ -12,7 +15,7 @@ class CreateExerciseRequest extends BaseExerciseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:exercises,exercises_name'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('exercises', 'exercises_name')->ignore(Exercise::find($this->id))],
             'exerciseDetails' => ['string', 'max:255'],
             'serie' => ['array'],
             'serie.*.weight' => ['required', 'numeric', 'min:1'],
