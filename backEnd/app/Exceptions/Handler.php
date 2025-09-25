@@ -53,6 +53,8 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (\Throwable $exception, $request) {
+            dd($exception);
+
             return response()->json([
                 'message' => 'Ooops, parece que houve um erro. Contate o suporte!',
                 'error' => true,

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 /**
  * @property string $name
- * @property string|null $exerciseDetail
+ * @property string|null $exerciseDetails
  * @property array $serie
  */
 class CreateExerciseRequest extends BaseExerciseRequest
@@ -13,12 +13,12 @@ class CreateExerciseRequest extends BaseExerciseRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:exercises,exercises_name'],
-            'exerciseDetail' => ['string', 'max:255'],
+            'exerciseDetails' => ['string', 'max:255'],
             'serie' => ['array'],
             'serie.*.weight' => ['required', 'numeric', 'min:1'],
             'serie.*.repetitions' => ['required', 'integer', 'min:1'],
             'serie.*.rest' => ['required', 'integer', 'min:1'],
-            'serie.*.detail' => ['string', 'max:255']
+            'serie.*.details' => ['string', 'max:255']
         ];
     }
 
@@ -30,8 +30,8 @@ class CreateExerciseRequest extends BaseExerciseRequest
             'name.max' => 'O nome do exercício deve ter no máximo 255 caracteres!',
             'name.unique' => 'Já existe um exercício cadastrado com este nome!',
 
-            'exerciseDetail.string' => 'Detalhe de exercício inválido!',
-            'exerciseDetail.max' => 'O detalhe do exercício deve ter no máximo 255 caracteres!',
+            'exerciseDetails.string' => 'Detalhe de exercício inválido!',
+            'exerciseDetails.max' => 'O detalhe do exercício deve ter no máximo 255 caracteres!',
 
             'serie.array' => 'As informações sobre as séries do exercício estão inválidas!',
             'serie.*.weight.required' => 'É necessário informar o peso para esta série!',
@@ -46,8 +46,8 @@ class CreateExerciseRequest extends BaseExerciseRequest
             'serie.*.rest.integer' => 'O tempo de descanso informado após esta série está inválido!',
             'serie.*.rest.min' => 'O tempo de descanso informado após esta série deve ser no mínimo 1 segundo!',
 
-            'serie.*.detail.string' => 'Detalhe de série inválido!',
-            'serie.*.detail.max' => 'O detalhe da série deve ter no máximo 255 caracteres!'
+            'serie.*.details.string' => 'Detalhe de série inválido!',
+            'serie.*.details.max' => 'O detalhe da série deve ter no máximo 255 caracteres!'
         ];
     }
 
@@ -57,15 +57,15 @@ class CreateExerciseRequest extends BaseExerciseRequest
 
         if (!empty($series)) {
             foreach ($series as $key => $serie) {
-                if (!empty($serie['detail'])) {
-                    $series[$key]['detail'] = strip_tags($serie['detail']);
+                if (!empty($serie['details'])) {
+                    $series[$key]['details'] = strip_tags($serie['details']);
                 }
             }
         }
 
         $this->merge([
             'name' => strip_tags($this->name),
-            'exerciseDetail' => strip_tags($this->exerciseDetail),
+            'exerciseDetails' => strip_tags($this->exerciseDetails),
             'serie' => $series ?? []
         ]);
     }

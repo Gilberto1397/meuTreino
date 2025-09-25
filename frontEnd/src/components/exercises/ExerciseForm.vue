@@ -10,7 +10,7 @@ const exercise = ref({
   exerciseId: '',
   name: '',
   seriesCount: null,
-  exerciseDetail: '',
+  exerciseDetails: '',
   serie: []
 });
 
@@ -210,7 +210,7 @@ onMounted(async () => {
                     :disabled="! isUpdate"
                     class="form-control"
                     :id="`detail-${index}`"
-                    v-model="serie.detail"
+                    v-model="serie.details"
                     placeholder="Observação"
                 >
                 </textarea>
