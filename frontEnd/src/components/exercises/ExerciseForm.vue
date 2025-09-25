@@ -76,6 +76,11 @@ const updateExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS R
   }
 }
 
+/**
+ * TODO caso utilizar uuid rever sobre o envio do id
+ * @param id
+ * @returns {Promise<void>}
+ */
 const getExercise = async (id) => {
   try {
     const resposta = (await axiosProvider.get(`meus-exercicios/${id}`)).data;
@@ -146,7 +151,7 @@ onMounted(async () => {
             :disabled="! isUpdate"
             class="form-control"
             id="exerciseDetail"
-            v-model="exercise.exerciseDetail"
+            v-model="exercise.exerciseDetails"
             placeholder="Observação sobre o exercício"
         >
         </textarea>
