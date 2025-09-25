@@ -20,6 +20,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     {
         $exercise = Exercise::create([
             'exercises_name' => $request->name,
+            'exercises_details' => $request->exerciseDetail,
             'exercises_users' => auth()->user()->id,
         ]);
 
@@ -32,9 +33,10 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             foreach ($request->serie as $serie) {
                 $repetitions[] = [
                     'exercises_repetitions_exercises' => $exercise->exercises_id,
-                    'exercises_repetitions_weight' => $serie['weight'],
-                    'exercises_repetitions_repetitions' => $serie['repetitions'],
-                    'exercises_repetitions_rest' => $serie['rest'],
+                    'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
+                    'exercises_repetitions_repetitions' => !empty($serie['repetitions']) ? $serie['repetitions'] : null,
+                    'exercises_repetitions_rest' => !empty($serie['rest']) ? $serie['rest'] : null,
+                    'exercises_repetitions_details' => !empty($serie['details']) ? $serie['details'] : null,
                 ];
             }
 
@@ -90,8 +92,9 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             db::rollBack();
             throw new \DomainException('Exercício não encontrado!');
         }
-        $updated = $exercise->update([
+        $updated = $exercise->update([ //TODO transformar em método e reutilizar no create
             'exercises_name' => $request->name,
+            'exercises_details' => $request->exerciseDetail,
             'exercises_users' => auth()->user()->id,
         ]);
 
@@ -115,9 +118,10 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             foreach ($request->serie as $serie) { //TODO TRANSFORMA EM MÉTODO E REUTILIZAR AKI E NO CREATE
                 $repetitions[] = [
                     'exercises_repetitions_exercises' => $exercise->exercises_id,
-                    'exercises_repetitions_weight' => $serie['weight'],
-                    'exercises_repetitions_repetitions' => $serie['repetitions'],
-                    'exercises_repetitions_rest' => $serie['rest'],
+                    'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
+                    'exercises_repetitions_repetitions' => !empty($serie['repetitions']) ? $serie['repetitions'] : null,
+                    'exercises_repetitions_rest' => !empty($serie['rest']) ? $serie['rest'] : null,
+                    '$exercises_repetitions_details' => !empty($serie['details']) ? $serie['details'] : null,
                 ];
             }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $exercises_id
  * @property string $exercises_name
+ * @property string $exercises_details
  * @property int $exercises_users
  */
 class Exercise extends Model
@@ -20,6 +21,7 @@ class Exercise extends Model
 
     protected $fillable = [
         'exercises_name',
+        'exercises_details',
         'exercises_users',
     ];
 }
