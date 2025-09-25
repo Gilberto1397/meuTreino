@@ -18,6 +18,8 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function createExercise(CreateExerciseRequest $request): bool
     {
+        DB::beginTransaction();
+
         $exercise = Exercise::create([
             'exercises_name' => $request->name,
             'exercises_details' => $request->exerciseDetails,
@@ -25,6 +27,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         ]);
 
         if (!$exercise instanceof Exercise) {
+            DB::rollBack();
             throw new \DomainException('Falha ao salvar o exercício!');
         }
         if (!empty($request->serie)) {
@@ -41,9 +44,11 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             }
 
             if (!ExerciseRepetition::insert($repetitions)) {
+                db::rollBack();
                 throw new \DomainException('Falha ao salvar as séries do exercício!');
             }
         }
+        DB::commit();
         return true;
     }
 
