@@ -10,6 +10,7 @@ const exercise = ref({
   exerciseId: '',
   name: '',
   seriesCount: null,
+  exerciseDetail: '',
   serie: []
 });
 
@@ -87,7 +88,7 @@ const getExercise = async (id) => {
 const isShowExercise = async () => {
   const exerciseId = routeDetails.params?.id
 
-  if (! exerciseId) {
+  if (!exerciseId) {
     isCreate.value = true;
     isUpdate.value = true;
     return;
@@ -137,6 +138,18 @@ onMounted(async () => {
             placeholder="Número de séries"
             min="1"
         >
+      </div>
+
+      <div class="mb-3">
+        <label for="series" class="form-label">Observação</label>
+        <textarea
+            :disabled="! isUpdate"
+            class="form-control"
+            id="exerciseDetail"
+            v-model="exercise.exerciseDetail"
+            placeholder="Observação sobre o exercício"
+        >
+        </textarea>
       </div>
 
       <!-- Campos dinâmicos para cada série -->
@@ -189,6 +202,18 @@ onMounted(async () => {
                     placeholder="Descanso em segundos"
                     min="0"
                 >
+              </div>
+
+              <div class="mt-2">
+                <label :for="`rest-${index}`" class="form-label">Detalhes da série</label>
+                <textarea
+                    :disabled="! isUpdate"
+                    class="form-control"
+                    :id="`detail-${index}`"
+                    v-model="serie.detail"
+                    placeholder="Descanso em segundos"
+                >
+                </textarea>
               </div>
             </div>
           </div>
