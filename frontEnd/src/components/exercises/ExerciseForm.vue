@@ -205,13 +205,13 @@ onMounted(async () => {
               </div>
 
               <div class="mt-2">
-                <label :for="`rest-${index}`" class="form-label">Detalhes da série</label>
+                <label :for="`rest-${index}`" class="form-label">Observação da série</label>
                 <textarea
                     :disabled="! isUpdate"
                     class="form-control"
                     :id="`detail-${index}`"
                     v-model="serie.detail"
-                    placeholder="Descanso em segundos"
+                    placeholder="Observação"
                 >
                 </textarea>
               </div>

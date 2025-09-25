@@ -29,3 +29,5 @@ Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/Ma
  segurança com HTTPS (via Let's Encrypt), ou até deploy automatizado com Git. Qual parte você quer explorar agora?
 
 ver sobre desativar tokens inativos com mais de 1h
+
+adicionar transação nos cruds

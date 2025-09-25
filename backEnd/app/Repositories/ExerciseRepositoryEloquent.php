@@ -36,7 +36,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
                     'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
                     'exercises_repetitions_repetitions' => !empty($serie['repetitions']) ? $serie['repetitions'] : null,
                     'exercises_repetitions_rest' => !empty($serie['rest']) ? $serie['rest'] : null,
-                    'exercises_repetitions_details' => !empty($serie['details']) ? $serie['details'] : null,
+                    'exercises_repetitions_details' => !empty($serie['detail']) ? $serie['detail'] : null,
                 ];
             }
 
