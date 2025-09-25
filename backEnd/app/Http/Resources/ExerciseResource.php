@@ -47,6 +47,7 @@ class ExerciseResource extends JsonResource
                 $exercises[$seriesKey] = (object)[
                     'id' => $exercise->exercises_id, //todo utilizar uuid e na chave do array
                     'name' => $exercise->exercises_name,
+                    'exerciseDetail' => $exercise->exercises_details,
                     'seriesCount' => $exercise->seriesQuantity,
                 ];
                 $exerciseId = $exercise->exercises_id;
@@ -56,7 +57,8 @@ class ExerciseResource extends JsonResource
                 $exercise->exercises_id,
                 $exercise->exercises_repetitions_weight,
                 $exercise->exercises_repetitions_repetitions,
-                $exercise->exercises_repetitions_rest
+                $exercise->exercises_repetitions_rest,
+                $exercise->exercises_repetitions_details
             );
         }
         return array_values($exercises);
