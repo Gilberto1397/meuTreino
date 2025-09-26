@@ -30,24 +30,8 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             DB::rollBack();
             throw new \DomainException('Falha ao salvar o exercício!');
         }
-        if (!empty($request->serie)) {
-            $repetitions = [];
+        $this->saveRepetitions($request->serie, $exercise);
 
-            foreach ($request->serie as $serie) {
-                $repetitions[] = [
-                    'exercises_repetitions_exercises' => $exercise->exercises_id,
-                    'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
-                    'exercises_repetitions_repetitions' => !empty($serie['repetitions']) ? $serie['repetitions'] : null,
-                    'exercises_repetitions_rest' => !empty($serie['rest']) ? $serie['rest'] : null,
-                    'exercises_repetitions_details' => !empty($serie['details']) ? $serie['details'] : null,
-                ];
-            }
-
-            if (!ExerciseRepetition::insert($repetitions)) {
-                db::rollBack();
-                throw new \DomainException('Falha ao salvar as séries do exercício!');
-            }
-        }
         DB::commit();
         return true;
     }
@@ -96,7 +80,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             db::rollBack();
             throw new \DomainException('Exercício não encontrado!');
         }
-        $updated = $exercise->update([ //TODO transformar em método e reutilizar no create
+        $updated = $exercise->update([
             'exercises_name' => $request->name,
             'exercises_details' => $request->exerciseDetails,
             'exercises_users' => auth()->user()->id,
@@ -106,20 +90,30 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             db::rollBack();
             throw new \DomainException('Falha ao atualizar o exercício!');
         }
-        if (!empty($request->serie)) {
+        $this->saveRepetitions($request->serie, $exercise, true);
+        DB::commit();
+        return true;
+    }
+
+
+    private function saveRepetitions(array $series, $exercise, $deleteRepetitions = false): void
+    {
+        if (!empty($series)) {
             $repetitions = [];
 
-            $deletedRepetitions = DB::delete(
-                'delete from exercises_repetitions where exercises_repetitions_exercises = :id',
-                [':id' => $exercise->exercises_id]
-            );
+            if ($deleteRepetitions) {
+                $deletedRepetitions = DB::delete(
+                    'delete from exercises_repetitions where exercises_repetitions_exercises = :id',
+                    [':id' => $exercise->exercises_id]
+                );
 
-            if (!is_int($deletedRepetitions)) {
-                db::rollBack();
-                throw new \DomainException('Falha ao atualizar as séries do exercício!');
+                if (!is_int($deletedRepetitions)) {
+                    db::rollBack();
+                    throw new \DomainException('Falha ao atualizar as séries do exercício!');
+                }
             }
 
-            foreach ($request->serie as $serie) { //TODO TRANSFORMA EM MÉTODO E REUTILIZAR AKI E NO CREATE
+            foreach ($series as $serie) {
                 $repetitions[] = [
                     'exercises_repetitions_exercises' => $exercise->exercises_id,
                     'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
@@ -134,7 +128,5 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
                 throw new \DomainException('Falha ao atualizar as séries do exercício!');
             }
         }
-        DB::commit();
-        return true;
     }
 }
