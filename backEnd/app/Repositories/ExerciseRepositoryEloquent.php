@@ -58,18 +58,17 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function getAll(): array
     {
-        //todo vai quebrar se não informar valor para os dados de repetição
         return Exercise::fromQuery('
             select exercises_id,
                    exercises_name,
-                   (select count(exercises_repetitions_exercises) from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id) as series,
-                    (select exercises_repetitions_repetitions from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_repetitions,
-                    (select exercises_repetitions_weight from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_weight,
-                    (select exercises_repetitions_rest from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_rest
+                   coalesce((select count(exercises_repetitions_exercises) from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id), 0) as series,
+                    coalesce((select exercises_repetitions_repetitions from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_repetitions,
+                    coalesce((select exercises_repetitions_weight from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_weight,
+                    coalesce((select exercises_repetitions_rest from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_rest
                 from exercises
             order by exercises_name
         ')->all();
@@ -79,11 +78,11 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     {
         return Exercise::fromQuery('
             select exercises.*,
-                   (select count(exercises_repetitions_exercises) from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id) as seriesQuantity,
+                   coalesce((select count(exercises_repetitions_exercises) from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id), 0) as seriesQuantity,
                    exercises_repetitions.*
             from exercises
-            inner join exercises_repetitions on exercises_repetitions_exercises = exercises_id
+            left join exercises_repetitions on exercises_repetitions_exercises = exercises_id
             where exercises_id = :id
             order by exercises_name, exercises_repetitions_id
         ', [':id' => $id])->all();

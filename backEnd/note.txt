@@ -30,4 +30,6 @@ Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/Ma
 
 ver sobre desativar tokens inativos com mais de 1h
 
+ver sobre encaminhamento após validade de 1h do token expirar
+
 adicionar transação nos cruds
