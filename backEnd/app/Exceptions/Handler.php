@@ -53,19 +53,6 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (\Throwable $exception, $request) {
-//            Log::channel('errors')
-//                ->warning(
-//                    'ERRO NÃO TRATADO',
-//                    [
-//                        'ExceptionType' => get_class($exception),
-//                        'errorMessage' => $exception->getMessage(),
-//                        'file' => $exception->getFile(),
-//                        'line' => $exception->getLine()
-//                    ]
-//                );
-
-            dd($exception);
-
             return response()->json([
                 'message' => 'Ooops, parece que houve um erro. Contate o suporte!',
                 'error' => true,

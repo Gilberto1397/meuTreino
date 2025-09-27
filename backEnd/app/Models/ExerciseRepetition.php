@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $exercises_repetitions_id
- * @property int exercises_repetitions_exercises
- * @property float exercises_repetitions_weight
- * @property int exercises_repetitions_times
- * @property int exercises_repetitions_rest
+ * @property int $exercises_repetitions_exercises
+ * @property float $exercises_repetitions_weight
+ * @property int $exercises_repetitions_times
+ * @property int $exercises_repetitions_rest
+ * @property string $exercises_repetitions_details
  */
 class ExerciseRepetition extends Model
 {

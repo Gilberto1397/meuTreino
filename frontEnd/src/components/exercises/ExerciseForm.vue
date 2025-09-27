@@ -10,6 +10,7 @@ const exercise = ref({
   exerciseId: '',
   name: '',
   seriesCount: null,
+  exerciseDetails: '',
   serie: []
 });
 
@@ -75,6 +76,11 @@ const updateExercise = async () => { //TODO E SE NÃO INFORMAR VALORES PARA AS R
   }
 }
 
+/**
+ * TODO caso utilizar uuid rever sobre o envio do id
+ * @param id
+ * @returns {Promise<void>}
+ */
 const getExercise = async (id) => {
   try {
     const resposta = (await axiosProvider.get(`meus-exercicios/${id}`)).data;
@@ -87,7 +93,7 @@ const getExercise = async (id) => {
 const isShowExercise = async () => {
   const exerciseId = routeDetails.params?.id
 
-  if (! exerciseId) {
+  if (!exerciseId) {
     isCreate.value = true;
     isUpdate.value = true;
     return;
@@ -137,6 +143,18 @@ onMounted(async () => {
             placeholder="Número de séries"
             min="1"
         >
+      </div>
+
+      <div class="mb-3">
+        <label for="series" class="form-label">Observação</label>
+        <textarea
+            :disabled="! isUpdate"
+            class="form-control"
+            id="exerciseDetail"
+            v-model="exercise.exerciseDetails"
+            placeholder="Observação sobre o exercício"
+        >
+        </textarea>
       </div>
 
       <!-- Campos dinâmicos para cada série -->
@@ -189,6 +207,18 @@ onMounted(async () => {
                     placeholder="Descanso em segundos"
                     min="0"
                 >
+              </div>
+
+              <div class="mt-2">
+                <label :for="`rest-${index}`" class="form-label">Observação da série</label>
+                <textarea
+                    :disabled="! isUpdate"
+                    class="form-control"
+                    :id="`detail-${index}`"
+                    v-model="serie.details"
+                    placeholder="Observação"
+                >
+                </textarea>
               </div>
             </div>
           </div>

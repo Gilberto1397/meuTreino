@@ -18,30 +18,21 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function createExercise(CreateExerciseRequest $request): bool
     {
+        DB::beginTransaction();
+
         $exercise = Exercise::create([
             'exercises_name' => $request->name,
+            'exercises_details' => $request->exerciseDetails,
             'exercises_users' => auth()->user()->id,
         ]);
 
         if (!$exercise instanceof Exercise) {
+            DB::rollBack();
             throw new \DomainException('Falha ao salvar o exercício!');
         }
-        if (!empty($request->serie)) {
-            $repetitions = [];
+        $this->saveRepetitions($request->serie, $exercise);
 
-            foreach ($request->serie as $serie) {
-                $repetitions[] = [
-                    'exercises_repetitions_exercises' => $exercise->exercises_id,
-                    'exercises_repetitions_weight' => $serie['weight'],
-                    'exercises_repetitions_repetitions' => $serie['repetitions'],
-                    'exercises_repetitions_rest' => $serie['rest'],
-                ];
-            }
-
-            if (!ExerciseRepetition::insert($repetitions)) {
-                throw new \DomainException('Falha ao salvar as séries do exercício!');
-            }
-        }
+        DB::commit();
         return true;
     }
 
@@ -51,18 +42,17 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
      */
     public function getAll(): array
     {
-        //todo vai quebrar se não informar valor para os dados de repetição
         return Exercise::fromQuery('
             select exercises_id,
                    exercises_name,
-                   (select count(exercises_repetitions_exercises) from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id) as series,
-                    (select exercises_repetitions_repetitions from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_repetitions,
-                    (select exercises_repetitions_weight from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_weight,
-                    (select exercises_repetitions_rest from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1) as first_rest
+                   coalesce((select count(exercises_repetitions_exercises) from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id), 0) as series,
+                    coalesce((select exercises_repetitions_repetitions from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_repetitions,
+                    coalesce((select exercises_repetitions_weight from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_weight,
+                    coalesce((select exercises_repetitions_rest from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id order by exercises_repetitions_id limit 1), 0) as first_rest
                 from exercises
             order by exercises_name
         ')->all();
@@ -72,11 +62,11 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     {
         return Exercise::fromQuery('
             select exercises.*,
-                   (select count(exercises_repetitions_exercises) from exercises_repetitions
-                    where exercises_repetitions_exercises = exercises_id) as seriesQuantity,
+                   coalesce((select count(exercises_repetitions_exercises) from exercises_repetitions
+                    where exercises_repetitions_exercises = exercises_id), 0) as seriesQuantity,
                    exercises_repetitions.*
             from exercises
-            inner join exercises_repetitions on exercises_repetitions_exercises = exercises_id
+            left join exercises_repetitions on exercises_repetitions_exercises = exercises_id
             where exercises_id = :id
             order by exercises_name, exercises_repetitions_id
         ', [':id' => $id])->all();
@@ -92,6 +82,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         }
         $updated = $exercise->update([
             'exercises_name' => $request->name,
+            'exercises_details' => $request->exerciseDetails,
             'exercises_users' => auth()->user()->id,
         ]);
 
@@ -99,25 +90,36 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
             db::rollBack();
             throw new \DomainException('Falha ao atualizar o exercício!');
         }
-        if (!empty($request->serie)) {
+        $this->saveRepetitions($request->serie, $exercise, true);
+        DB::commit();
+        return true;
+    }
+
+
+    private function saveRepetitions(array $series, $exercise, $deleteRepetitions = false): void
+    {
+        if (!empty($series)) {
             $repetitions = [];
 
-            $deletedRepetitions = DB::delete(
-                'delete from exercises_repetitions where exercises_repetitions_exercises = :id',
-                [':id' => $exercise->exercises_id]
-            );
+            if ($deleteRepetitions) {
+                $deletedRepetitions = DB::delete(
+                    'delete from exercises_repetitions where exercises_repetitions_exercises = :id',
+                    [':id' => $exercise->exercises_id]
+                );
 
-            if (!is_int($deletedRepetitions)) {
-                db::rollBack();
-                throw new \DomainException('Falha ao atualizar as séries do exercício!');
+                if (!is_int($deletedRepetitions)) {
+                    db::rollBack();
+                    throw new \DomainException('Falha ao atualizar as séries do exercício!');
+                }
             }
 
-            foreach ($request->serie as $serie) { //TODO TRANSFORMA EM MÉTODO E REUTILIZAR AKI E NO CREATE
+            foreach ($series as $serie) {
                 $repetitions[] = [
                     'exercises_repetitions_exercises' => $exercise->exercises_id,
-                    'exercises_repetitions_weight' => $serie['weight'],
-                    'exercises_repetitions_repetitions' => $serie['repetitions'],
-                    'exercises_repetitions_rest' => $serie['rest'],
+                    'exercises_repetitions_weight' => !empty($serie['weight']) ? $serie['weight'] : null,
+                    'exercises_repetitions_repetitions' => !empty($serie['repetitions']) ? $serie['repetitions'] : null,
+                    'exercises_repetitions_rest' => !empty($serie['rest']) ? $serie['rest'] : null,
+                    'exercises_repetitions_details' => !empty($serie['details']) ? $serie['details'] : null,
                 ];
             }
 
@@ -126,7 +128,5 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
                 throw new \DomainException('Falha ao atualizar as séries do exercício!');
             }
         }
-        DB::commit();
-        return true;
     }
 }

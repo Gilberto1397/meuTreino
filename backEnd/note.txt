@@ -1,18 +1,19 @@
 apache - domínio - modo produção
 
 tentar usar o lembrar-me e email verificado
+- email precisa da rotine de cadastro
 
 contar o número de vezes que o usuário fez aquele exercício - somar tanto no grupo de exercícios quanto exercício unitário
 
 ajustar errorHandler principalmente para não autenticado - ajustar driver de log
     erro ao tentar deslogar sem enviar token
 
-campo de observação para exercício e séries
+campo de observação para exercício e séries <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+rever error handling
 
 
 utilizar phpstan, psalm ou outra ferramenta de análise estática
-
-adicionar um campo de observação na criação de exercícios em cada série
 
 testar ter 2 series mas só preencher 1
 
@@ -27,3 +28,9 @@ ajustar segurança - CORS, rate limit, helmet / api e front
 
 Se quiser, posso te ajudar a configurar um ambiente com banco de dados (MySQL/MariaDB),
  segurança com HTTPS (via Let's Encrypt), ou até deploy automatizado com Git. Qual parte você quer explorar agora?
+
+ver sobre desativar tokens inativos com mais de 1h
+
+ver sobre encaminhamento após validade de 1h do token expirar
+
+adicionar transação nos cruds
