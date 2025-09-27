@@ -1,6 +1,7 @@
 apache - domínio - modo produção
 
 tentar usar o lembrar-me e email verificado
+- email precisa da rotine de cadastro
 
 contar o número de vezes que o usuário fez aquele exercício - somar tanto no grupo de exercícios quanto exercício unitário
 
