@@ -38,7 +38,7 @@ class ExerciseController extends Controller
     {
         if (!filter_var($id, FILTER_VALIDATE_INT) || empty($id)) {
             return response()->json(
-                ['error' => $response->getError(), 'message' => 'ID inválido'],
+                ['error' => $response->getError(), 'message' => 'ID inválido'], //todo arrumar variável $response
                 500
             );
         }

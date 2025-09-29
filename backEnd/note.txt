@@ -8,12 +8,10 @@ contar o número de vezes que o usuário fez aquele exercício - somar tanto no 
 ajustar errorHandler principalmente para não autenticado - ajustar driver de log
     erro ao tentar deslogar sem enviar token
 
-campo de observação para exercício e séries <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 rever error handling
 
 
-utilizar phpstan, psalm ou outra ferramenta de análise estática
+utilizar phpstan, psalm, code_sniffer ou outra ferramenta de análise estática <<<<<<<<<<<<<<<
 
 testar ter 2 series mas só preencher 1
 
