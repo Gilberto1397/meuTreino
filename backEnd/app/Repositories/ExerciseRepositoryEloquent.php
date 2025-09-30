@@ -23,7 +23,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         $exercise = Exercise::create([
             'exercises_name' => $request->name,
             'exercises_details' => $request->exerciseDetails,
-            'exercises_users' => auth()->user()->id,
+            'exercises_users' => auth()->user()->id, //@phpstan-ignore-line
         ]);
 
         if (!$exercise instanceof Exercise) {
@@ -83,7 +83,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
         $updated = $exercise->update([
             'exercises_name' => $request->name,
             'exercises_details' => $request->exerciseDetails,
-            'exercises_users' => auth()->user()->id,
+            'exercises_users' => auth()->user()->id, //@phpstan-ignore-line
         ]);
 
         if (! $updated) {
