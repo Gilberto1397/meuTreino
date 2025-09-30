@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Exercise;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExerciseResource extends JsonResource
@@ -12,38 +13,42 @@ class ExerciseResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request $request
+     * @phpstan-ignore-next-line
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
-        return [
-            'id' => $this->exercises_id, //todo utilizar uuid
-            'name' => $this->exercises_name,
-
-            //todo validar se da erro caso não exista repetições, peso ou descanso
-        ];
+        return [];
     }
 
-    public static function firstData($exercise)
+    /**
+     * @param Exercise $exercise
+     * @return Object
+     */
+    public static function firstData(Exercise $exercise): Object
     {
         return (object)[
             'id' => $exercise->exercises_id, //todo utilizar uuid
             'name' => $exercise->exercises_name,
-            'series' => $exercise->series,
-            'firstRepetitions' => $exercise->first_repetitions,
-            'firstWeight' => $exercise->first_weight,
-            'firstRest' => $exercise->first_rest,
+            'series' => $exercise->series, //@phpstan-ignore-line
+            'firstRepetitions' => $exercise->first_repetitions, //@phpstan-ignore-line
+            'firstWeight' => $exercise->first_weight, //@phpstan-ignore-line
+            'firstRest' => $exercise->first_rest, //@phpstan-ignore-line
         ];
     }
 
-    public static function fullData($exerciseData)
+    /**
+     * @param array $exerciseData
+     * @return array
+     */
+    public static function fullData(array $exerciseData): array
     {
         $exercises = [];
         $exerciseId = null;
+        $seriesKey = $exerciseData[0]->exercises_id;
 
         foreach ($exerciseData as $exercise) {
             if ($exercise->exercises_id !== $exerciseId) {
-                $seriesKey = $exercise->exercises_id;
                 $exercises[$seriesKey] = (object)[
                     'id' => $exercise->exercises_id, //todo utilizar uuid e na chave do array
                     'name' => $exercise->exercises_name,

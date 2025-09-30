@@ -8,7 +8,12 @@ use App\Http\Requests\UpdateExerciseRequest;
 
 class UpdateExerciseService
 {
-    public function updateExercise(ExerciseRepository $repository, UpdateExerciseRequest $request)
+    /**
+     * @param ExerciseRepository $repository
+     * @param UpdateExerciseRequest $request
+     * @return OrganizeResponse
+     */
+    public function updateExercise(ExerciseRepository $repository, UpdateExerciseRequest $request): OrganizeResponse
     {
         $response = $repository->updateExercise($request);
         return new OrganizeResponse(200, 'Exercício atualizado com sucesso!');

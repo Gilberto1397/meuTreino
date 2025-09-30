@@ -17,7 +17,16 @@ class ExerciseRepetitionResource extends JsonResource
         return parent::toArray($request);
     }
 
-    public static function getSeries($repetitionId, $exerciseId, $weight, $repetitions, $rest, $details)
+    /**
+     * @param int $repetitionId
+     * @param int $exerciseId
+     * @param int $weight
+     * @param int $repetitions
+     * @param int $rest
+     * @param string $details
+     * @return Object
+     */
+    public static function getSeries(int $repetitionId, int $exerciseId, int $weight, int $repetitions, int $rest, string $details): Object
     {
         return (object)[
             'id' => $repetitionId, //todo utilizar uuid
