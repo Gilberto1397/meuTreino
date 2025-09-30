@@ -8,7 +8,12 @@ use App\Http\Resources\ExerciseResourceCollection;
 
 class GetExerciseByFiltersService
 {
-    public function getExerciseByFilters(ExerciseRepository $repository, int $id)
+    /**
+     * @param ExerciseRepository $repository
+     * @param int $id
+     * @return OrganizeResponse
+     */
+    public function getExerciseByFilters(ExerciseRepository $repository, int $id): OrganizeResponse
     {
         return new OrganizeResponse(
             200,

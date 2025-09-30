@@ -69,7 +69,7 @@ class CreateExerciseRequest extends BaseExerciseRequest
         $this->merge([
             'name' => strip_tags($this->name),
             'exerciseDetails' => strip_tags($this->exerciseDetails),
-            'serie' => $series ?? []
+            'serie' => $series
         ]);
     }
 }

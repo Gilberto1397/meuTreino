@@ -21,7 +21,11 @@ class ExerciseResourceCollection extends ResourceCollection
         return parent::toArray($request);
     }
 
-    public static function firstData($exercises)
+    /**
+     * @param array $exercises
+     * @return array
+     */
+    public static function firstData(array $exercises): array
     {
         $dados = [];
 
@@ -31,7 +35,11 @@ class ExerciseResourceCollection extends ResourceCollection
         return $dados;
     }
 
-    public static function fullData($exerciseData)
+    /**
+     * @param array $exerciseData
+     * @return array
+     */
+    public static function fullData(array $exerciseData): array
     {
         return ExerciseResource::fullData($exerciseData);
     }

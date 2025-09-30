@@ -96,7 +96,7 @@ class ExerciseRepositoryEloquent implements ExerciseRepository
     }
 
 
-    private function saveRepetitions(array $series, $exercise, $deleteRepetitions = false): void
+    private function saveRepetitions(array $series, Exercise $exercise, bool $deleteRepetitions = false): void
     {
         if (!empty($series)) {
             $repetitions = [];

@@ -9,10 +9,16 @@ use App\Services\CreateExerciseService;
 use App\Services\GetAllExercicesService;
 use App\Services\GetExerciseByFiltersService;
 use App\Services\UpdateExerciseService;
+use Illuminate\Http\JsonResponse;
 
 class ExerciseController extends Controller
 {
-    public function createExercise(CreateExerciseRequest $request) //testar multiplo formrequest
+    /**
+     * @param CreateExerciseRequest $request
+     * @throws \DomainException
+     * @return JsonResponse
+     */
+    public function createExercise(CreateExerciseRequest $request): JsonResponse //testar multiplo formrequest
     {
         try {
             $response = (new CreateExerciseService())->createExercise(new ExerciseRepositoryEloquent(), $request);
@@ -25,7 +31,10 @@ class ExerciseController extends Controller
         }
     }
 
-    public function getAll()
+    /**
+     * @return JsonResponse
+     */
+    public function getAll(): JsonResponse
     {
         $resposta = (new GetAllExercicesService())->getAll(new ExerciseRepositoryEloquent());
         return response()->json(
@@ -34,11 +43,15 @@ class ExerciseController extends Controller
         );
     }
 
-    public function getExerciseByFilters($id) //todo refatorar para mais filtros
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getExerciseByFilters(int $id): JsonResponse //todo refatorar para mais filtros
     {
         if (!filter_var($id, FILTER_VALIDATE_INT) || empty($id)) {
             return response()->json(
-                ['error' => $response->getError(), 'message' => 'ID inválido'], //todo arrumar variável $response
+                ['error' => true, 'message' => 'ID inválido'], //todo arrumar variável $response
                 500
             );
         }
@@ -50,7 +63,12 @@ class ExerciseController extends Controller
         );
     }
 
-    public function updateExercise(UpdateExerciseRequest $request)
+    /**
+     * @param UpdateExerciseRequest $request
+     * @throws \DomainException
+     * @return JsonResponse
+     */
+    public function updateExercise(UpdateExerciseRequest $request): JsonResponse
     {
         try {
             $response = (new UpdateExerciseService())->updateExercise(new ExerciseRepositoryEloquent(), $request);

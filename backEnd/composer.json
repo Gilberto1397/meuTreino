@@ -48,7 +48,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "stan": "./vendor/bin/phpstan analyze --memory-limit=2G"
+        "stan": "./vendor/bin/phpstan analyze -vvv --memory-limit=2G"
     },
     "extra": {
         "laravel": {
