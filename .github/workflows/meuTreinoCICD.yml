@@ -1,8 +1,8 @@
 name: meuTreino CI/CD
 
 on:
-#  pull_request:
-#    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
   push:
     branches: [ "*" ]
 
