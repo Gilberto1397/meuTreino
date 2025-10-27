@@ -5,6 +5,9 @@ parameters:
 
     paths:
         - app
+        - database
+        - routes
+        - tests
 
     # The level 9 is the highest level
     level: 9
@@ -12,9 +15,6 @@ parameters:
     ignoreErrors:
 
     excludePaths:
-        - ./app/Http/Controllers/AuthController.php
-        - ./app/Http/Middleware/Authenticate.php
-        - ./app/Providers/RouteServiceProvider.php
 
     checkMissingIterableValueType: false
 
